@@ -6,25 +6,9 @@ module.exports = {
       name: 'ember-data-release',
       npm: {
         devDependencies: {
-          'ember-data': 'emberjs/data#release'
+          'ember-data': '3.1.1'
         }
       }
     },
-    {
-      name: 'ember-data-beta',
-      npm: {
-        devDependencies: {
-          'ember-data': 'emberjs/data#beta'
-        }
-      }
-    },
-    {
-      name: 'ember-data-canary',
-      npm: {
-        devDependencies: {
-          'ember-data': 'emberjs/data#master'
-        }
-      }
-    }
   ]
 };

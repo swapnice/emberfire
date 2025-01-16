@@ -141,7 +141,14 @@ export default DS.Adapter.extend(Waitable, {
    * @private
    */
   _fetch(ref, log) {
-    return RSVP.resolve(ref.once('value'), log);
+    console.log('inside _fetch');
+    let resolvingPromise = Promise.resolve(ref.once('value'), log);
+    console.log('resolvingPromise', resolvingPromise);
+    console.log('resolvingPromise.then', resolvingPromise.then);
+    // resolvingPromise.then((value) => {
+    //   console.log('value', value);
+    // });
+    return resolvingPromise;
   },
 
 
@@ -234,6 +241,7 @@ export default DS.Adapter.extend(Waitable, {
 
 
   query(store, typeClass, query, recordArray) {
+    console.log('query in emberfire');
     var ref = this._getCollectionRef(typeClass);
     var modelName = typeClass.modelName;
 
@@ -274,13 +282,17 @@ export default DS.Adapter.extend(Waitable, {
     };
 
     var log = `DS: FirebaseAdapter#query ${modelName} with ${query}`;
-
+    console.log('log', log);
+    console.log('_fetch', ref);
     return this._fetch(ref, log).then((snapshot) => {
+      console.log('snapshot', snapshot);
       if (!this._findAllHasEventsForType(typeClass)) {
         this._findAllAddEventListeners(store, typeClass, ref);
       }
+      console.log('snapshot.forEach');
       var results = [];
       snapshot.forEach((childSnapshot) => {
+        console.log('childSnapshot', childSnapshot);
         var payload = this._assignIdToPayload(childSnapshot);
         this._updateRecordCacheForType(typeClass, payload, store);
         results.push(payload);
@@ -291,7 +303,7 @@ export default DS.Adapter.extend(Waitable, {
 
 
   applyQueryToRef(ref, query) {
-
+    console.log('applyQueryToRef', ref, query);
     if (!query.orderBy) {
       query.orderBy = '_key';
     }
@@ -621,7 +633,7 @@ export default DS.Adapter.extend(Waitable, {
     if (record) {
       return record.save();
     }
-    return Ember.RSVP.Promise.reject(new Error(`Unable to find record with id ${id} from embedded relationship: ${JSON.stringify(relationship)}`));
+    return RSVP.Promise.reject(new Error(`Unable to find record with id ${id} from embedded relationship: ${JSON.stringify(relationship)}`));
   },
 
 

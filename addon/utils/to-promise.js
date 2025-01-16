@@ -1,8 +1,6 @@
-import Ember from 'ember';
-
 export default function(fn, context, _args, errorMsg) {
   var args = _args || [];
-  return new Ember.RSVP.Promise(function(resolve, reject) {
+  return new Promise(function(resolve, reject) {
     var callback = function(error) {
       if (error) {
         if (errorMsg && typeof error === 'object') {
